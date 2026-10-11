@@ -1,32 +1,61 @@
+
 import mongoose from "mongoose";
-import validator, { stripLow } from "validator";
+import validator from "validator";
+import bcrypt from "bcrypt";
 
-const{Schema}=mongoose;
+const { Schema } = mongoose;
 
-const userSchema=new Schema({
-  email:{
-    type:String,
-    unique:true,
-    lowercase:true,
-    required:true,
-    validate:[validator.isEmail,"please enter a valid email"]
+const userSchema = new Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+      validate: {
+        validator: (value) => validator.isEmail(value),
+        message: "Please enter a valid email address",
+      },
+    },
 
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+
+    password: {
+      type: String,
+      required: true,
+      select: false,
+      validate: {
+        validator: (value) => validator.isStrongPassword(value),
+        message:
+          "Password must include uppercase and lowercase letters, a number, and a symbol",
+      },
+    },
   },
-  username:{
-    type:String,
-    required:true,
-    unique:true,
-    lowercase:true
-  },
-  passwords:{
-    type:String,
-    required:true,
-    select:false,
-    validate:[
-       {
-          validator:value=>validator.isStrongPassword(value),
-          message:"password must contain one or more alphanumeric,charecters and symbols"
-        }
-    ]
+  {
+    timestamps: true,
   }
-})
+);
+
+// Hash the password before saving a user document.
+userSchema.pre("save", async function () {
+  // Do not hash the password again unless it has changed.
+  if (!this.isModified("password")) {
+    return;
+  }
+
+  const salt = await bcrypt.genSalt(10);
+
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
+// Create and export the Mongoose model.
+const User = mongoose.model("User", userSchema);
+
+export default User;
