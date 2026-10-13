@@ -29,6 +29,6 @@ export const registerUser=async(req,res)=>{
   } catch (error) {
     
     console.log("error at registeruser",error.message)
-    res.send("something went wrong"+error.message);
+    res.send(error.message);
   }
 }
