@@ -9,8 +9,13 @@ const PORT = 8000;
 app.use(express.json())
 
 app.post("/api/register-user",registerUser);
-connectDB();
 
-app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
-});
+const startServer = async () => {
+  await connectDB();
+
+  app.listen(PORT, () => {
+    console.log(`Server listening on http://localhost:${PORT}`);
+  });
+};
+
+startServer();
