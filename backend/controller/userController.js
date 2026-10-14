@@ -25,10 +25,16 @@ export const registerUser=async(req,res)=>{
 
     await userInfo.save()
     userInfo.password=undefined;
-    res.status(201).send(userInfo);
+    res.status(201).send({
+      success:true,
+      message:"registered successfully"
+    });
   } catch (error) {
     
     console.log("error at registeruser",error.message)
-    res.send(error.message);
+   return res.status(500).json({
+  success: false,
+  message: "An error occurred during registration"
+});
   }
 }
