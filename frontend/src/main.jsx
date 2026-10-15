@@ -7,6 +7,7 @@ import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import DashboardPage from './pages/DashboardPage'
 import { Toaster } from 'react-hot-toast'
+import UserContext, { UserProvider } from './hooks/useUser'
 
 
 const router=createBrowserRouter([
@@ -33,7 +34,9 @@ const router=createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <UserProvider>
     <Toaster/>
    <RouterProvider router={router}/>
-  </StrictMode>,
+   </UserProvider>
+  </StrictMode>
 )
