@@ -2,11 +2,11 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import { createBrowserRouter, Router, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
-import Dashboard from './pages/DashboardPage'
 import DashboardPage from './pages/DashboardPage'
+import { Toaster } from 'react-hot-toast'
 
 
 const router=createBrowserRouter([
@@ -33,6 +33,7 @@ const router=createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <Toaster/>
    <RouterProvider router={router}/>
   </StrictMode>,
 )
