@@ -2,13 +2,14 @@
 import express from "express";
 import connectDB from "./config/db.js"
 import { registerUser } from "./controller/userController.js";
+import userRouter from "./routes/userRouter.js";
 
 const app = express();
 const PORT = 8000;
 
 app.use(express.json())
 
-app.post("/api/register-user",registerUser);
+app.use("/api/user",userRouter)
 
 const startServer = async () => {
   await connectDB();
