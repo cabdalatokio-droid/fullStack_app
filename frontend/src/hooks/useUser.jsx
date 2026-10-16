@@ -12,14 +12,14 @@ const logOut=()=>{
   localStorage.removeItem("expirationTime")
 }
 
-useEffect=(()=>{
-  const storedUser=parse(localStorage.getItem("user"));
-  const expirationTime=parse(localStorage.getItem("expirationTime"));
+useEffect(()=>{
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+ const expirationTime = Number(localStorage.getItem("expirationTime"));
 
   if(storedUser&&expirationTime){
 
      const currrentTime= new Date().getTime();
-     
+
      if(currrentTime<expirationTime){
       setUser(storedUser);
      }

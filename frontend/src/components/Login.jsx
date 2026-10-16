@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Card,
   CardHeader,
@@ -21,8 +21,13 @@ const Login = () => {
   });
  
   const [loading, setLoading] = useState(false);
-  const naviage=useNavigate();
-   const {login}=useUser();
+  const navigate=useNavigate();
+   const {login,user}=useUser();
+
+   useEffect(()=>{
+     if(user)  navigate("/")
+   },[])
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -41,13 +46,14 @@ const Login = () => {
      toast.success(data.message);
        setLoading(false)
      login(data,data.expiresIn)
+      navigate("/")
      
      setFormData({
       email:'',
       password:'',
      })
     
-    //  naviage("/")
+    
      
     } catch (error) {
         setLoading(false)
