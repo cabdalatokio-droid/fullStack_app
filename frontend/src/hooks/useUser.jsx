@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const UserContext=createContext(null);
@@ -9,7 +10,8 @@ const [user,setUser]=useState(null)
 
 const logOut=()=>{
   localStorage.removeItem("user");
-  localStorage.removeItem("expirationTime")
+  localStorage.removeItem("expirationTime");
+    setUser(null);
 }
 
 useEffect(()=>{
@@ -38,7 +40,7 @@ const login=(userData,expiresIn)=>{
 }
 
 return (
-  <UserContext.Provider value={{user,setUser,login}}>
+  <UserContext.Provider value={{user,setUser,login,logOut}}>
     {children}
   </UserContext.Provider>
 );

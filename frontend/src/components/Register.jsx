@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Card,
   CardHeader,
@@ -12,6 +12,7 @@ import { Button } from './ui/button';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '@/hooks/useUser';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +22,13 @@ const Register = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const naviage=useNavigate();
+  const navigate=useNavigate();
+
+    const {login,user}=useUser();
+  
+     useEffect(()=>{
+       if(user)  navigate("/")
+     },[])
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -44,7 +51,7 @@ const Register = () => {
       username:''
      })
 
-     naviage("/login")
+     navigate("/login")
      
     } catch (e) {
         setLoading(false)
