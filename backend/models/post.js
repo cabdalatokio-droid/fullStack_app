@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator";
 
-const {Schema}=mongoose();
+const {Schema}=mongoose;
 
 const PostSchema= new Schema({
 title:{
@@ -27,6 +27,6 @@ authoer:{
 });
 
 
-const Post=mongoose.model("Post",userSchema);
+const Post=mongoose.model("Post",PostSchema);
 
 export default Post;
