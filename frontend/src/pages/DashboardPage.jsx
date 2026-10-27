@@ -1,6 +1,8 @@
 const DashboardPage = () => {
   return (
-    <div>DashboardPage</div>
+    <div className="container mx-auto">
+      
+    </div>
   )
 }
 

@@ -75,7 +75,7 @@ const token = jwt.sign(
   }
 );
 
-res.cookie("token", token, {
+res.cookies("token", token, {
   httpOnly: true,
   secure: false,
   maxAge: expiresIn* 1000
