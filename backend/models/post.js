@@ -19,12 +19,15 @@ image:{
   default:null
 
 },
-authoer:{
+author:{
   type:Schema.Types.ObjectId,
   ref:"User",
   required:true
 }
-});
+},
+  {
+    timestamps: true,
+  });
 
 
 const Post=mongoose.model("Post",PostSchema);

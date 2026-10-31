@@ -19,7 +19,7 @@ export const createPost=async(req,res)=>{
     })
    }
 
-   const post=await new Post({
+   const post= new Post({
    title:title,
    content:content,
    image:result?.url || null,
@@ -28,9 +28,10 @@ export const createPost=async(req,res)=>{
 
 
    await post.save();
-   res.status(2001).json({
+   res.status(201).json({
     post:post,
-    message:'seccessfully created post',
+    success:true,
+    message:'Post created successfully',
    })
 
    
@@ -39,7 +40,42 @@ export const createPost=async(req,res)=>{
   console.log("error creating post", error);
   res.status(400).send({
     message:"creating post failed",
-    succes:false
+    success:false
   })
  }
+}
+
+export const getPosts=async(req,res)=>{
+  try {
+    const posts= await Post.find({author:req.user._id})
+  .populate({
+    path:"author",
+    model:"User",
+    select:"username "
+  }).sort({createdAt:-1});
+
+  res.status(200).json(posts);
+    
+  } catch (error) {
+    res.status(400).json({
+      message:error.message,
+      success:false
+    })
+  }
+}
+
+export const DeletePost=async(req,res,next)=>{
+try {
+  const post= await Post.findByIdAndDelete
+  (req.params.id);
+  if(!post) return res.status(400).send({
+    message:"Not Found"
+  })
+
+  res.status(200).json({
+    message:"post deleted seccessfully"
+  })
+} catch (error) {
+  next(error)
+}
 }
