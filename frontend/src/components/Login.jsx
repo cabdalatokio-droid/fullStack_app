@@ -42,7 +42,6 @@ const Login = () => {
     setLoading(true)
     try {
      const {data}= await axios.post("/api/user/login-user", formData);
-      console.log(data);
      toast.success(data.message);
        setLoading(false)
      login(data,data.expiresIn)

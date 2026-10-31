@@ -1,6 +1,5 @@
 import { useUser } from '@/hooks/useUser'
 import { Link } from 'react-router-dom'
-
 const Header = () => {
   const{user,logOut}=useUser();
   return (

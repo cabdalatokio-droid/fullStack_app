@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
-const DialogForm = () => {
+const DialogForm = ({ buttonTitle,postEdit}) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState(null);
@@ -23,6 +23,19 @@ const DialogForm = () => {
   const [loading, setLoading] = useState(false);
 
   const fileInputRef = useRef(null);
+
+
+  const isEditing=postEdit!==null
+  console.log(isEditing);
+  console.log(postEdit)
+
+  useEffect(()=>{
+    if(isEditing){
+      setTitle(postEdit.title);
+      setContent(postEdit.content);
+      setPreview(postEdit.image)
+    }
+  },[postEdit])
 
   // Display the selected image before submitting
   const handleImageChange = (e) => {
@@ -65,15 +78,22 @@ const DialogForm = () => {
     if (image) {
       formData.append('image', image);
     }
-
+       
     try {
+      if(isEditing){
+        
+      const response = await axios.post(
+        '/api/post/update-post',
+        formData
+      );
+      }
+      else{
+        
       const response = await axios.post(
         '/api/post/create-post',
         formData
       );
-
-      console.log('Post created:', response.data);
-
+      }
       setTitle('');
       setContent('');
       setImage(null);
@@ -85,10 +105,7 @@ const DialogForm = () => {
 
       toast.success(response.data.message);
     } catch (error) {
-      console.error('Create post failed:', error);
-      console.error('Request URL:', error.config?.url);
-      console.error('Status:', error.response?.status);
-      console.error('Server response:', error.response?.data);
+  
 
       toast.error(
         error.response?.data?.message ||
@@ -102,9 +119,13 @@ const DialogForm = () => {
   return (
     <Dialog>
       {/* Use render to avoid nesting one button inside another */}
-      <DialogTrigger render={<Button type="button" />}>
-        Create New Post
-      </DialogTrigger>
+       <DialogTrigger
+    render={
+      <Button>
+        {buttonTitle ? "Update Post" : "Create New Post"}
+      </Button>
+    }
+  ></DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
