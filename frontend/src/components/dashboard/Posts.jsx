@@ -50,13 +50,13 @@ const[postData,setPostData]=useState(null);
 
   return (
     <div>
-      <DialogForm/>
+      <DialogForm setPostData={setPostData}/>
       <div>
         {loading && <h1>Loading......</h1>}
         <div className='grid grid-cols-3 gap-4'>
           {postData?.map(post=>(
             <Post key={post._id}
-            post={post} onDelete={handleDelete}/>
+            post={post} onDelete={handleDelete} setPostData={setPostData}/>
           ))}
         </div>
       </div>

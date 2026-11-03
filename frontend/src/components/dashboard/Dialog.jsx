@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
-const DialogForm = ({ buttonTitle,postEdit}) => {
+const DialogForm = ({ buttonTitle,postEdit,setPostData}) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState(null);
@@ -25,7 +25,7 @@ const DialogForm = ({ buttonTitle,postEdit}) => {
   const fileInputRef = useRef(null);
 
 
-  const isEditing=postEdit!==null
+  const isEditing=postEdit;
   console.log(isEditing);
   console.log(postEdit)
 
@@ -80,20 +80,30 @@ const DialogForm = ({ buttonTitle,postEdit}) => {
     }
        
     try {
+      let response;
       if(isEditing){
-        
-      const response = await axios.post(
-        '/api/post/update-post',
-        formData
-      );
+    response = await axios.post(
+  `/api/post/update-post/${postEdit._id}`,
+  formData
+   );  
       }
       else{
         
-      const response = await axios.post(
+       response = await axios.post(
         '/api/post/create-post',
         formData
       );
       }
+      const savedPost=response.data.post;
+      setPostData((currentPosts)=>{
+        if(isEditing){
+          return currentPosts.map((post)=>(
+            post._id===savedPost._id? savedPost:post
+          ))
+        }
+        return [savedPost, ...currentPosts];
+      })
+
       setTitle('');
       setContent('');
       setImage(null);
@@ -180,7 +190,7 @@ const DialogForm = ({ buttonTitle,postEdit}) => {
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
-                required
+                // required
               />
 
               {/* Image preview appears immediately after selection */}

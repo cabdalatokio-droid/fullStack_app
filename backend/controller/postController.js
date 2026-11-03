@@ -79,3 +79,46 @@ try {
   next(error)
 }
 }
+
+
+export const updatepost=async(req,res)=>{
+  try {
+    const updatefields = {
+      title: req.body.title,
+      content: req.body.content
+    };
+
+    if (req.file) {
+      const encodedImage = `data:image/jpeg;base64,${req.file.buffer.toString('base64')}`;
+      const result = await cloudinary.uploader.upload(encodedImage, {
+        resource_type: 'image',
+        transformation: [{ width: 500, height: 500, crop: 'limit' }],
+        encoding: 'base64'
+      });
+      updatefields.image = result.url;
+    }
+
+   const post =await Post.findByIdAndUpdate(req.params.id,updatefields,{
+    new:true
+   })
+
+    if (!post) {
+      return res.status(404).json({
+        message: 'Post not found',
+        success: false
+      });
+    }
+
+    return res.status(200).json({
+      post:post,
+      success: true,
+      message: 'Post updated successfully'
+    })
+  } catch (error) {
+    console.error('Error updating post', error);
+    return res.status(400).json({
+      message: 'Post update failed',
+      success: false
+    });
+  }
+};
