@@ -54,7 +54,7 @@ export const loginUser=async(req,res)=>{
 
  if(!isUserExist){
     return res.status(400).json({
-        message: "invalid email please provid valid email"
+        message: "invalid email or password"
       });
  }
   const isPasswordCorrect=await isUserExist.comparePassword(password);
