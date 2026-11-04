@@ -45,24 +45,42 @@ export const createPost=async(req,res)=>{
  }
 }
 
-export const getPosts=async(req,res)=>{
-  try {
-    const posts= await Post.find({author:req.user._id})
-  .populate({
-    path:"author",
-    model:"User",
-    select:"username "
-  }).sort({createdAt:-1});
+// export const getPosts=async(req,res)=>{
+//   try {
+//     const posts= await Post.find({author:req.user._id})
+//   .populate({
+//     path:"author",
+//     model:"User",
+//     select:"username "
+//   }).sort({createdAt:-1});
 
-  res.status(200).json(posts);
+//   res.status(200).json(posts);
     
+//   } catch (error) {
+//     res.status(400).json({
+//       message:error.message,
+//       success:false
+//     })
+//   }
+// }
+export const getPosts = async (req, res) => {
+  try {
+    const posts = await Post.find()
+      .populate({
+        path: "author",
+        model: "User",
+        select: "username"
+      })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(posts);
   } catch (error) {
-    res.status(400).json({
-      message:error.message,
-      success:false
-    })
+    res.status(500).json({
+      message: error.message,
+      success: false
+    });
   }
-}
+};
 
 export const DeletePost=async(req,res,next)=>{
 try {

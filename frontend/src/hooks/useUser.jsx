@@ -4,14 +4,17 @@ import { useNavigate } from "react-router-dom";
 
 const UserContext=createContext(null);
 
+
 export const UserProvider=({children})=>{
 
-const [user,setUser]=useState(null)
-
+const [user,setUser]=useState(null);
+const navigate=useNavigate();
 const logOut=()=>{
   localStorage.removeItem("user");
   localStorage.removeItem("expirationTime");
     setUser(null);
+    navigate("/login");
+  
 }
 
 useEffect(()=>{

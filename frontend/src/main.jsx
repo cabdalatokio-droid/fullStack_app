@@ -12,8 +12,12 @@ import UserContext, { UserProvider } from './hooks/useUser'
 
 const router=createBrowserRouter([
  {
-  path:"/",
-  element:<App/>,
+  path: "/",
+    element: (
+      <UserProvider>
+        <App />
+      </UserProvider>
+    ),
   children:[
     {
       path:"/register",
@@ -34,9 +38,7 @@ const router=createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <UserProvider>
     <Toaster/>
    <RouterProvider router={router}/>
-   </UserProvider>
   </StrictMode>
 )

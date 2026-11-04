@@ -27,6 +27,9 @@ const[postData,setPostData]=useState(null);
   },[]);
 
   const handleDelete = async (postId) => {
+    if(!confirm){
+      
+    }
   try {
     const { data } = await axios.delete(
       `/api/post/delete-post/${postId}`
@@ -49,7 +52,7 @@ const[postData,setPostData]=useState(null);
 };
 
   return (
-    <div>
+    <div >
       <DialogForm setPostData={setPostData}/>
       <div>
         {loading && <h1>Loading......</h1>}
